@@ -1,135 +1,209 @@
-# Turborepo starter
+# ExpenseTracker
 
-This Turborepo starter is maintained by the Turborepo core team.
+A full-stack expense tracking application built with a Turborepo monorepo structure.
 
-## Using this example
+## Tech Stack
 
-Run the following command:
+- **Mobile**: React Native (Expo)
+- **Backend**: Express.js + Bun
+- **Database**: PostgreSQL (Supabase) + Prisma ORM
+- **Auth**: JWT
+- **Rate Limiting**: Upstash Redis
+- **Monorepo**: Turborepo
+
+## Project Structure
+
+```
+ExpenseTracker/
+├── apps/
+│ ├── backend/ # Express API (Bun)
+│ └── mobile/ # Expo React Native app
+├── packages/
+│ └── db/ # Prisma schema + client
+```
+
+
+## Prerequisites
+
+- Bun >= 1.0
+- Node.js >= 20
+- Supabase PostgreSQL database
+- Upstash Redis account
+- Xcode (for iOS development)
+
+
+## Setup
 
 ```sh
-npx create-turbo@latest
+bun install
 ```
 
-## What's inside?
+## Environment Variables
 
-This Turborepo includes the following packages/apps:
+### Create .env files:
 
-### Apps and Packages
+#### apps/backend/.env
+```env
+PORT=8080
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+DATABASE_URL=postgresql://...
+DIRECT_URL=postgresql://...
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+JWT_PUBLIC_KEY=-----BEGIN PUBLIC KEY-----
 
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
+UPSTASH_REDIS_REST_URL=https://...
+UPSTASH_REDIS_REST_TOKEN=...
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+#### packages/db/.env
+```env
+DATABASE_URL=postgresql://...?pgbouncer=true
+DIRECT_URL=postgresql://...
+```
+#### apps/mobile/.env
+```
+EXPO_PUBLIC_API_URL=http://localhost:8080
+EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=...
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
+## Run the Project
+### Backend
+```bash
+cd apps/backend
+bun run dev
 ```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+### Mobile
+```bash
+cd apps/mobile
+bun run dev
 ```
+Then press:
+- ```i``` → iOS simulator
+- ```a``` → Android emulator
+- ```w``` → web
 
-### Develop
+#### Important Notes:
+- Uses ***Expo Dev Client*** (NOT Expo Go)
+- Requires native build (```expo run:ios```) at least once
+- Prisma uses Supabase Postgres
+- Upstash Redis used for rate limiting only
 
-To develop all apps and packages, run the following command:
-
+## Scripts
+### Backend
+```bash
+bun run dev
+bun run start
 ```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
-
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
+### DB Package
+```bash
+bunx prisma generate
+bunx prisma migrate dev
+bunx prisma studio
 ```
 
-### Remote Caching
+## Backend (ExpenseTracker API)
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+Express.js API running on Bun runtime.
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+### Tech Stack
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+- Bun (runtime)
+- Express.js v5
+- Prisma ORM (via `packages/db`)
+- JWT authentication
+- Upstash Redis (rate limiting)
+- PostgreSQL (Supabase)
 
+### Setup
+
+```bash
+bun install
+bun run dev
 ```
-cd my-turborepo
+### API Routes
+#### Transactions
 
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/transactions` | Create transaction |
+| GET | `/api/transactions/:userId` | Get user transactions |
+| DELETE | `/api/transactions/:id` | Delete transaction |
+| GET | `/api/transactions/summary/:userId` | Get summary |
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
+#### Health
+```
+GET /health
 ```
 
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
+#### Environment Variables
+```env
+PORT=8080
 
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+DATABASE_URL=postgresql://...
+DIRECT_URL=postgresql://...
 
+JWT_PUBLIC_KEY=...
+
+UPSTASH_REDIS_REST_URL=...
+UPSTASH_REDIS_REST_TOKEN=...
 ```
-# With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
 
-# Without [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
+#### Scripts
+```bash
+bun run dev     # development
+bun run start   # production
 ```
 
-## Useful Links
+## Database Package (Prisma)
 
-Learn more about the power of Turborepo:
+Shared Prisma database layer for ExpenseTracker.
 
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+### Tech Stack
+
+- Prisma ORM (v7)
+- PostgreSQL (Supabase)
+- PgBouncer connection pooling
+
+
+### Setup
+
+```bash
+bun install
+bunx prisma generate
+bunx prisma migrate dev
+```
+### Usage
+```ts
+import { prismaClient } from "db/client";
+
+const transactions = await prismaClient.transactions.findMany({
+  where: { userId: "user123" },
+  orderBy: { created_at: "desc" },
+});
+```
+### Environment Variables
+```env
+DATABASE_URL=postgresql://...?pgbouncer=true
+DIRECT_URL=postgresql://...
+```
+### Prisma Model
+```prisma
+model transactions {
+  id         Int      @id @default(autoincrement())
+  userId     String
+  title      String
+  amount     Decimal  @db.Decimal(10, 2)
+  category   String
+  created_at DateTime @default(now())
+}
+```
+### Scripts
+```bash
+bunx prisma generate
+bunx prisma migrate dev
+bunx prisma studio
+```
+
+## Author
+
+**Deepak Majhi**
+
