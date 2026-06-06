@@ -1,16 +1,21 @@
 {
   "version": 2,
-  "buildCommand": "bun run build",
   "builds": [
     {
-      "src": "dist/src/index.js",
+      "src": "src/index.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "dist/src/index.js"
+      "dest": "src/index.ts"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/health",
+      "schedule": "*/14 * * * *"
     }
   ]
 }
