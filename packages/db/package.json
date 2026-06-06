@@ -6,6 +6,9 @@
   "exports": {
     "./client": "./src/index.ts"
   },
+  "scripts": {
+    "build": "npx prisma generate"
+  },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/node": "^25.3.0",
