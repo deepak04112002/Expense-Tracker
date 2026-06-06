@@ -4,8 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "prebuild": "cd ../../packages/db && npx prisma generate && tsc",
+    "build": "tsc --outDir dist",
     "dev": "bun --watch src/index.ts",
-    "build": "cd ../../packages/db && npx prisma generate && tsc && cd ../../apps/backend && tsc --outDir dist",
     "start": "node dist/src/index.js"
   },
   "devDependencies": {
