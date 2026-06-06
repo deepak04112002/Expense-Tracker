@@ -1,9 +1,9 @@
 import type { Request, Response } from "express";
 import express from "express";
 import cors from "cors";
-import rateLimiter from "./middleware/rateLimiter"
-import transactionRoutes from "./routes/transactionRoutes";
-import job from "./config/cron";
+import rateLimiter from "./middleware/rateLimiter.js"
+import transactionRoutes from "./routes/transactionRoutes.js";
+import job from "./config/cron.js";
 
 const PORT = process.env.PORT;
 const app = express();

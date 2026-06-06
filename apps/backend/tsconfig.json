@@ -2,11 +2,11 @@
   "compilerOptions": {
     "lib": ["ESNext"],
     "target": "ESNext",
-    "module": "Preserve",
+    "module": "Node16",
     "moduleDetection": "force",
     "allowJs": true,
 
-    "moduleResolution": "Bundler",
+    "moduleResolution": "Node16",
     "esModuleInterop": true,
     "outDir": "dist",
     "rootDir": "src",

@@ -1,6 +1,6 @@
-// rateLimiter.ts
 import type { Request, Response, NextFunction } from "express";
-import rateLimit from "../config/upstash";
+import rateLimit from "../config/upstash.js";
+
 
 const limiter = rateLimit(); // instantiate once
 
