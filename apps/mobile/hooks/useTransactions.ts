@@ -1,7 +1,8 @@
 import { useState,useCallback } from "react";
 import { Alert } from "react-native";
 
-const API_URL = process.env.API_URL||"http://localhost:8080/api";
+const API_URL = `${process.env.EXPO_PUBLIC_API_URL}/api`;
+console.log("API_URL:", API_URL);
 
 export default function useTransactions(userId: string) {
   const [transactions, setTransactions] = useState([]);
@@ -14,13 +15,15 @@ export default function useTransactions(userId: string) {
 
   // useCallback is used for performance reasons, it will memoize the function
   const fetchTransactions = useCallback(async () => {
-    try {
-      const response = await fetch(`${API_URL}/transactions/${userId}`);
-      const data = await response.json();
-      setTransactions(data);
-    } catch (error) {
-      console.error("Error fetching transactions:", error);
-    }
+   try {
+    console.log("Fetching:", `${API_URL}/transactions/${userId}`);
+    const response = await fetch(`${API_URL}/transactions/${userId}`);
+    console.log("Status:", response.status);
+    const data = await response.json();
+    setTransactions(data);
+  } catch (error) {
+    console.error("Error fetching transactions:", error);
+  }
   }, [userId]);
 
   const fetchSummary = useCallback(async () => {

@@ -12,7 +12,7 @@ import { useState } from "react";
 import useStyles from "@/assets/styles/create.styles";
 import { COLORS } from "@/constants/colors";
 import { Ionicons } from "@expo/vector-icons";
-const API_URL = process.env.API_URL||"http://localhost:8080/api";
+const API_URL = `${process.env.EXPO_PUBLIC_API_URL}/api`;
 
 const CATEGORIES = [
   { id: "food", name: "Food & Drinks", icon: "fast-food" as const },
