@@ -1,12 +1,12 @@
 {
   "version": 2,
   "buildCommand": "turbo run build --filter=backend...",
-  "builds": [
-    {
-      "src": "apps/backend/src/index.ts",
-      "use": "@vercel/node"
+  "outputDirectory": "apps/backend/dist",
+  "functions": {
+    "apps/backend/src/index.ts": {
+      "runtime": "@vercel/node"
     }
-  ],
+  },
   "routes": [
     {
       "src": "/(.*)",

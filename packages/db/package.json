@@ -4,7 +4,10 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./client": "./dist/src/index.js"
+    "./client": {
+      "types": "./src/index.ts",
+      "default": "./dist/src/index.js"
+    }
   },
   "scripts": {
     "build": "npx prisma generate && tsc"
