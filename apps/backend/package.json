@@ -18,11 +18,13 @@
   },
   "dependencies": {
     "@types/cors": "^2.8.19",
+    "@types/cron": "^2.4.3",
     "@types/express": "^5.0.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.36.2",
     "cors": "^2.8.6",
+    "cron": "^4.4.0",
     "db": "*",
     "express": "^5.2.1",
     "jsonwebtoken": "^9.0.3"
