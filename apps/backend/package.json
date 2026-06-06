@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src/index.ts",
-    "build": "tsc --outDir dist",
+    "build": "cd ../../packages/db && npx prisma generate && tsc && cd ../../apps/backend && tsc --outDir dist",
     "start": "node dist/src/index.js"
   },
   "devDependencies": {
