@@ -2,10 +2,10 @@
   "compilerOptions": {
     "lib": ["ESNext"],
     "target": "ESNext",
-    "module": "Preserve",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "moduleDetection": "force",
     "allowJs": true,
-    "moduleResolution": "Bundler",
     "esModuleInterop": true,
     "outDir": "dist",
     "rootDir": ".",
