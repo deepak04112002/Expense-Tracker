@@ -4,13 +4,17 @@ import { ClerkProvider } from "@clerk/clerk-expo";
 import { tokenCache } from "@clerk/clerk-expo/token-cache";
 import { StatusBar } from "expo-status-bar";
 import Constants from "expo-constants";
+import { Platform } from "react-native";
 
-const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY || 
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY ||
   Constants.expoConfig?.extra?.clerkPublishableKey || "";
 
 export default function RootLayout() {
   return (
-    <ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+    <ClerkProvider 
+      publishableKey={publishableKey} 
+      tokenCache={Platform.OS === "web" ? undefined : tokenCache}
+    >
       <SafeScreen>
         <Slot />
       </SafeScreen>
